@@ -27,3 +27,4 @@ It will then output a consolized display of the card made and then after that al
   The constructor does very little validation or checking to make sure the card makes sense; it is mostly garbage in, garbage out.  The execptions are if the cloze does not exist in the fullText, or if the cloze is the empty string, then it will throw an error.
 
   ClozeCard also has a getDisplayStr() that builds and returns a string based off the fullText and partialText properties.
+  It also has a helper function called getClozeText() that returns a clozed text based off the fullText and cloze stored in the object.  The constructor calls this to set the property of partialText.
