@@ -24,29 +24,33 @@ BasicCard.prototype.getDisplayStr = function(){
 
 function ClozeCard(text, cloze){
   if(this instanceof ClozeCard){
-    this.text=text;
-    this.cloze=cloze;
+    if(text.includes(cloze) && cloze!==""){
+      this.fullText=text;
+      this.cloze=cloze;
+      this.partialText=this.getClozeText();
+    } else if(cloze!=="") {
+      throw "Cloze not in Text";
+    } else {
+      throw "Cloze cannot be empty";
+    }
   } else {
     return new ClozeCard(text, cloze);
   }
 }
 
 ClozeCard.prototype.getClozeText = function(){
-  var tempText=this.text;
-  var tempCloze=this.cloze; 
-  //santiizing cloze for regex;
-  tempCloze.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+  //sanitizing cloze for regex;
+  var tempCloze=this.cloze.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
   var reg = new RegExp(tempCloze, "g");
-  tempText = tempText.replace(reg, " ... ");
-  return tempText;
+  return this.fullText.replace(reg, " ... ");
 };
 
 
 ClozeCard.prototype.getDisplayStr = function(){
   var str="======Front========\n";
-  str+=this.getClozeText();
+  str+=this.partialText;
   str+="\n=======Back========\n";
-  str+=this.cloze;
+  str+=this.fullText;
   str+="\n===================";
 
   return str;
